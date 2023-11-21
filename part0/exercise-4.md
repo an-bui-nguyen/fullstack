@@ -15,6 +15,9 @@ sequenceDiagram
     server-->>browser: the notes HTML document
     deactivate server
 
+    Note right of browser: The browser performs GET requests for the .css and .js files as directed in the notes HTML
+
+
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
     server-->>browser: the css file
