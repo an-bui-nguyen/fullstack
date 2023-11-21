@@ -3,9 +3,16 @@ sequenceDiagram
     participant browser
     participant server
 
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>browser: HTTP Status Code 302
+    deactivate server
+    
+    Note right of browser: The HTTP 302 status code is a URL redirect request for the browser to do a new GET request
+
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
-    server-->>browser: HTML document
+    server-->>browser: the notes HTML document
     deactivate server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
@@ -22,8 +29,14 @@ sequenceDiagram
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
+    server-->>browser: [{ "content": "brrr ah", "date": "2023-11-21T02:06:10.763Z"}, ... ]
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes
+    activate server
     server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
     deactivate server
+```
 
     Note right of browser: The browser executes the callback function that renders the notes
 ```
