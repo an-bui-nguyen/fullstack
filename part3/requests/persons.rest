@@ -1,0 +1,31 @@
+DELETE http://localhost:3000/api/persons/2
+
+###
+POST http://localhost:3000/api/persons
+Content-Type: application/json
+
+{   
+    "name": "Dan Abramov",
+    "number": "12-43-234345"
+}
+
+###
+GET http://localhost:3000/api/persons
+
+###
+GET http://localhost:3000/api/persons/3
+
+###
+GET http://localhost:3000/info/
+
+###
+DELETE http://localhost:3000/api/persons/1
+
+###
+PUT http://localhost:3000/api/persons/65655363ecb716523279f2cc
+Content-Type: application/json
+
+{
+    "name": "Timmy",
+    "number": "hehe"
+}
