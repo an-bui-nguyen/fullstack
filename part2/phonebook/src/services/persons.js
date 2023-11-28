@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3001/persons/";
+const baseURL = "http://localhost:3000/api/persons/";
 
 const getAll = async () => {
     const response = await axios.get(baseURL);
@@ -8,18 +8,18 @@ const getAll = async () => {
 };
 
 const addPerson = async (newPerson) => {
-    const response = await axios.post(baseURL, newPerson);
-    console.log(response.data);
-    return response.data;
+    const response = axios.post(baseURL, newPerson);
+    return response;
 }
 
-const putPerson = async (newPerson, id) => {
-    const response = await axios.put(`${baseURL}${id}`, newPerson);
-    return response.data;
+const putPerson = (newPerson, id) => {
+    const response = axios.put(`${baseURL}${id}`, newPerson);
+    return response;
 }
 
 const deletePerson = async (id) => {
-    await axios.delete(`${baseURL}${id}`);
+    const response = await axios.delete(`${baseURL}${id}`);
+    return response.data;
 }
 
 export default { getAll, addPerson, deletePerson, putPerson }

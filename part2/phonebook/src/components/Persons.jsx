@@ -3,10 +3,10 @@ import personService from "../services/persons";
 const Persons = (props) => {
     const deletePerson = async (id) => {
         const person = props.persons.find((person) => person.id === id)
+        console.log(person);
         if (confirm(`Delete ${person.name}?`)) {
-            await personService.deletePerson(id);
-            const newArray = props.persons.filter(function (person) {return person.id !== id});
-            props.setPersons(newArray);
+            const response = await personService.deletePerson(id);
+            props.setPersons(response);
         }
     }
 

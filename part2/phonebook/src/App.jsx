@@ -41,15 +41,23 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      const response = await personService.addPerson(newObject);
-      setPersons(persons.concat(response));
-      setNotification({type: "success", content: `Added ${newName}`})
-      setNewName("");
-      setNewNumber("");
-      setDisplayFilter(false)
-      setTimeout(() => {
-        setNotification(null);
-      }, 3000)
+      personService.addPerson(newObject)
+      .then(response => {
+        setPersons(persons.concat(response.data));
+        setNotification({type: "success", content: `Added ${newName}`})
+        setNewName("");
+        setNewNumber("");
+        setDisplayFilter(false)
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000)
+      })
+      .catch(error => {
+        setNotification({type: "error", content: `${error.response.data.error}`});
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000)
+      });
     }
 
     /**
@@ -57,23 +65,40 @@ const App = () => {
      * @param {*} newName Name of the entry to be updated with new phone number
      * @param {*} newNumber New phone number
      */
-    async function putData(newName, newNumber) {
-      const person = persons.find(person => person.name === newName);
-      const changedPerson = {...person, number: newNumber};
-
-      const responseData = await personService.putPerson(changedPerson, person.id);
-      setPersons(persons.map(p => p.name !== newName ? p : responseData));
+    async function putData(newName, newNumber, id) {
+      const responseData = await personService.putPerson({name: newName, number: newNumber}, id);
+      setPersons(persons.map(p => p.name !== newName ? p : responseData.data));
     }
 
     if (names.includes(newName)) {
       if (confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
-        await putData(newName, newNumber).catch(console.error);
+        const foundPerson = persons.find((person) => {return person.name == newName})
+        putData(newName, newNumber, foundPerson.id)
+        .then(() => {
+          setNewName("");
+          setNewNumber("");
+          setNotification({type: "success", content: `Changed ${newName}'s number.`})
+          setTimeout(() => {
+            setNotification(null);
+          }, 3000)
+        })
+        .catch(error => {
+          setNotification({type: "error", content: `${error.response.data.error}`});
+          setTimeout(() => {
+            setNotification(null);
+          }, 3000)
+        });
       }
-      setNewName("");
-      setNewNumber("");
+      
     } else {
       await postData()
-      .catch(error => {console.log(error)});
+      .catch(error => {
+        console.log(error.response.data.error); 
+        setNotification({type: "error", content: `${error.response.data.error}`});
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000)
+    });
     }
   }
 
@@ -98,7 +123,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Notification message={notification}/>
       <Filter handleFilterChange={handleFilterChange} newFilter={newFilter}/>
-      <h2>Phonebook</h2>
+      <h2>Add a new entry</h2>
       <PersonForm 
         handleSubmit={addPerson} 
         handleInputChange={handleInputChange} 
