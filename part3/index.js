@@ -34,7 +34,7 @@ app.get("/api/persons", (req, res) => {
 app.get("/info", (req, res) => {
     const time = new Date().toString();
     Person.find({}).then(result => {
-        res.send(`<p>Phonebook has info for ${result.length} ${result.length == 1 ? "person" : "people"}</p> <p>${time}</p>`)
+        res.send(`<p>Phonebook has info for ${result.length} ${result.length === 1 ? "person" : "people"}</p> <p>${time}</p>`)
     })
 })
 
@@ -85,14 +85,13 @@ app.put('/api/persons/:id', (req, res, next) => {
         number: req.body.number
     }
 
-    Person.findByIdAndUpdate(id, person, { new: true, runValidators: true, context: 'query'})
+    Person.findByIdAndUpdate(id, person, { new: true, runValidators: true, context: 'query' })
         .then(updatedNote => {
             res.json(updatedNote)
         })
         .catch(error => {
             next(error)
         })
-        
 })
 
 const PORT = process.env.PORT || 3000
@@ -110,15 +109,12 @@ app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
     console.error(error.message)
-  
     if (error.name === 'CastError') {
       return response.status(400).send({ error: 'malformatted id' })
     } else if (error.name === "ValidationError") {
         return response.status(400).json({ error: error.message })
     }
-  
     next(error)
   }
-  
 // this has to be the last loaded middleware.
 app.use(errorHandler)
