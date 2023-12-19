@@ -1,13 +1,13 @@
+/* eslint-disable react/react-in-jsx-scope */
 const Note = ({ note, toggleImportance }) => {
-
   const label = note.important
     ? 'make not important' : 'make important'
 
   return (
-    <>
-      <li>{note.content}</li>
+    <li className='note'>
+      <span>{note.content}</span>
       <button onClick={toggleImportance}>{label}</button>
-    </>
+    </li>
   )
 }
 

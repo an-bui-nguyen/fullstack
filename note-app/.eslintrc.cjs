@@ -1,9 +1,10 @@
 module.exports = {
   "env": {
       "browser": true,
-      "jest": true,
+      "jest/globals": true,
       "es2021": true,
-      "node": true
+      "node": true,
+      "cypress/globals": true
   },
   "extends": [
       "eslint:recommended",
@@ -27,7 +28,7 @@ module.exports = {
       "sourceType": "module"
   },
   "plugins": [
-      "react"
+      "react", "jest", "cypress"
   ],
   "globals": {
     "$": true,
@@ -37,5 +38,6 @@ module.exports = {
     "console": true,
   },
   "rules": {
+    "react/prop-types": 0
   }
 }
