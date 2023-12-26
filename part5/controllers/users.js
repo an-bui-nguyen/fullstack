@@ -1,12 +1,12 @@
-const bcrypt = require("bcrypt")
-const usersRouter = require("express").Router()
-const User = require("../model/user.js")
+const bcrypt = require('bcrypt')
+const usersRouter = require('express').Router()
+const User = require('../model/user.js')
 
-usersRouter.post("/", async (req, res, next) => {
+usersRouter.post('/', async (req, res, next) => {
   const { username, name, password } = req.body
 
   if (password.length < 3) {
-    res.status(400).json({error: "password should have minimum length 3"})
+    res.status(400).json({ error: 'password should have minimum length 3' })
   }
 
   const saltRounds = 10
@@ -23,8 +23,8 @@ usersRouter.post("/", async (req, res, next) => {
   res.status(201).json(newUser)
 })
 
-usersRouter.get("/", async (req, res, next) => {
-  const users = await User.find({}).populate("blogs")
+usersRouter.get('/', async (req, res, next) => {
+  const users = await User.find({}).populate('blogs')
   res.json(users)
 })
 
